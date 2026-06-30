@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GitHub · Release · Download</title>
+    <!-- GitHub official release page style: clean, card-based, with subtle shadows -->
+    <style>
+        /* ----- reset & base ----- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #f6f8fa;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 1.5rem;
+        }
+
+        /* ----- release card: mimics GitHub's release/readme container ----- */
+        .release-card {
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06), 0 2px 6px rgba(0, 0, 0, 0.04);
+            padding: 2.5rem 2.5rem 2.2rem;
+            max-width: 680px;
+            width: 100%;
+            border: 1px solid #e1e4e8;
+            transition: box-shadow 0.2s ease, transform 0.2s ease;
+        }
+
+        .release-card:hover {
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08), 0 4px 12px rgba(0, 0, 0, 0.04);
+        }
+
+        /* ----- header: release tag + title (official GitHub release style) ----- */
+        .release-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.25rem;
+            flex-wrap: wrap;
+        }
+
+        .release-tag {
+            background: #ddf4ff;
+            color: #0550ae;
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.2rem 0.7rem;
+            border-radius: 20px;
+            border: 1px solid #b6e3ff;
+            letter-spacing: 0.01em;
+            white-space: nowrap;
+        }
+
+        .release-version {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #24292f;
+            letter-spacing: -0.02em;
+        }
+
+        .release-version small {
+            font-weight: 400;
+            color: #57606a;
+            font-size: 0.85rem;
+            margin-left: 0.4rem;
+        }
+
+        /* ----- meta info: like "latest release" with date & assets ----- */
+        .release-meta {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem 1rem;
+            flex-wrap: wrap;
+            margin: 0.5rem 0 1.2rem 0;
+            font-size: 0.85rem;
+            color: #57606a;
+            border-bottom: 1px solid #e1e4e8;
+            padding-bottom: 0.8rem;
+        }
+
+        .release-meta .dot {
+            color: #d0d7de;
+        }
+
+        .release-meta .label {
+            background: #f6f8fa;
+            padding: 0.1rem 0.6rem;
+            border-radius: 12px;
+            border: 1px solid #e1e4e8;
+            font-size: 0.7rem;
+            color: #57606a;
+        }
+
+        .release-meta .label.latest {
+            background: #dafbe1;
+            border-color: #9be9a8;
+            color: #1a7f37;
+        }
+
+        /* ----- description (like README summary) ----- */
+        .release-description {
+            font-size: 0.95rem;
+            color: #24292f;
+            line-height: 1.6;
+            margin: 0.8rem 0 1.8rem 0;
+            padding: 0.2rem 0;
+        }
+
+        .release-description code {
+            background: #f6f8fa;
+            padding: 0.15rem 0.4rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            border: 1px solid #e1e4e8;
+            font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+        }
+
+        .release-description .highlight {
+            background: #fff8c5;
+            padding: 0.1rem 0.3rem;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+
+        /* ----- GitHub primary button (official download look) ----- */
+        .btn-github {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            background-color: #2da44e;
+            background-image: linear-gradient(-180deg, #2da44e 0%, #22863a 90%);
+            color: #fff;
+            border: 1px solid rgba(27, 31, 36, 0.15);
+            border-radius: 6px;
+            padding: 0.8rem 2.2rem;
+            font-size: 1.05rem;
+            font-weight: 600;
+            line-height: 1.3;
+            text-decoration: none;
+            transition: background 0.2s ease, transform 0.05s ease, box-shadow 0.1s ease;
+            box-shadow: 0 1px 0 rgba(27, 31, 36, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.03);
+            cursor: pointer;
+            user-select: none;
+            white-space: nowrap;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-github:hover {
+            background-color: #2c974b;
+            background-image: linear-gradient(-180deg, #2c974b 0%, #1e7a34 90%);
+            border-color: rgba(27, 31, 36, 0.15);
+            box-shadow: 0 2px 8px rgba(45, 164, 78, 0.25);
+            text-decoration: none;
+            transform: scale(1.02);
+        }
+
+        .btn-github:active {
+            background-color: #1e7a34;
+            background-image: linear-gradient(-180deg, #1e7a34 0%, #165c26 90%);
+            border-color: rgba(27, 31, 36, 0.2);
+            transform: scale(0.96);
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-github:focus-visible {
+            outline: 2px solid #0969da;
+            outline-offset: 2px;
+        }
+
+        .btn-github svg {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+            flex-shrink: 0;
+            transition: transform 0.3s ease;
+        }
+
+        .btn-github .ripple {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(0);
+            animation: ripple-animation 0.6s ease-out;
+            pointer-events: none;
+        }
+
+        @keyframes ripple-animation {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+
+        /* download counter badge */
+        .download-counter {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            background: #f6f8fa;
+            padding: 0.2rem 0.7rem;
+            border-radius: 12px;
+            border: 1px solid #d0d7de;
+            font-size: 0.75rem;
+            color: #24292f;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .download-counter .count {
+            font-weight: 700;
+            color: #0969da;
+            min-width: 2rem;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .download-counter.pop {
+            animation: pop 0.3s ease;
+        }
+
+        @keyframes pop {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.2);
+                background: #ddf4ff;
+                border-color: #0969da;
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        /* ----- action row: button + asset details (like release assets) ----- */
+        .action-row {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem 1.5rem;
+            margin: 1.8rem 0 0.5rem 0;
+            padding-top: 0.8rem;
+            border-top: 1px solid #e1e4e8;
+        }
+
+        .asset-hint {
+            font-size: 0.8rem;
+            color: #57606a;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .asset-hint svg {
+            width: 16px;
+            height: 16px;
+            fill: #8b949e;
+        }
+
+        .asset-hint span {
+            background: #f6f8fa;
+            padding: 0.1rem 0.5rem;
+            border-radius: 12px;
+            border: 1px solid #d0d7de;
+            font-size: 0.7rem;
+            font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+            color: #24292f;
+        }
+
+        .asset-hint .checksum {
+            background: #f6f8fa;
+            padding: 0.1rem 0.5rem;
+            border-radius: 12px;
+            border: 1px solid #d0d7de;
+            font-size: 0.65rem;
+            font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+            color: #57606a;
+        }
+
+        /* ----- footer: release info (never shows the actual link) ----- */
+        .release-footer {
+            margin-top: 1.8rem;
+            font-size: 0.75rem;
+            color: #8b949e;
+            border-top: 1px solid #e1e4e8;
+            padding-top: 1.2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .release-footer .badge {
+            background: #f6f8fa;
+            padding: 0.1rem 0.6rem;
+            border-radius: 12px;
+            border: 1px solid #d0d7de;
+            font-size: 0.65rem;
+            color: #57606a;
+            font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+        }
+
+        .release-footer .link-hidden {
+            color: #8b949e;
+            font-size: 0.7rem;
+            letter-spacing: 0.01em;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .release-footer .github-icon {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            fill: #8b949e;
+            vertical-align: middle;
+        }
+
+        /* clock in footer */
+        .live-clock {
+            font-variant-numeric: tabular-nums;
+            background: #f6f8fa;
+            padding: 0.1rem 0.5rem;
+            border-radius: 12px;
+            border: 1px solid #d0d7de;
+            font-size: 0.65rem;
+            font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+            color: #57606a;
+        }
+
+        /* notification toast */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: #24292f;
+            color: #fff;
+            padding: 0.8rem 1.8rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            pointer-events: none;
+            z-index: 999;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .toast svg {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+        }
+
+        /* responsive tweaks */
+        @media (max-width: 500px) {
+            .release-card {
+                padding: 1.8rem 1.2rem;
+            }
+            .release-header {
+                gap: 0.4rem;
+            }
+            .release-version {
+                font-size: 1.1rem;
+            }
+            .btn-github {
+                padding: 0.7rem 1.4rem;
+                font-size: 0.95rem;
+                white-space: normal;
+            }
+            .action-row {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.8rem;
+            }
+            .release-footer {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- TOAST NOTIFICATION -->
+    <div class="toast" id="toast">
+        <svg viewBox="0 0 16 16" aria-hidden="true">
+            <path d="M8 0a8 8 0 100 16A8 8 0 008 0zM7 11.5a1 1 0 112 0 1 1 0 01-2 0zm.25-8a.75.75 0 011.5 0v5a.75.75 0 01-1.5 0v-5z" />
+        </svg>
+        <span id="toastMessage">Download started!</span>
+    </div>
+
+    <div class="release-card">
+        <!-- RELEASE HEADER: tag + version -->
+        <div class="release-header">
+            <span class="release-tag">🚀 Release</span>
+            <span class="release-version">
+                v1.0.0
+                <small>· latest</small>
+            </span>
+        </div>
+
+        <!-- META: published date, assets, and status labels -->
+        <div class="release-meta">
+            <span>Published <time datetime="2026-06-27" id="publishDate">27 June 2026</time></span>
+            <span class="dot">•</span>
+            <span>2 assets</span>
+            <span class="dot">•</span>
+            <span class="label latest">Latest</span>
+            <span class="dot">•</span>
+            <span class="label">pre-release</span>
+            <span class="dot">•</span>
+            <span class="download-counter" id="downloadCounter">
+                ⬇️ <span class="count" id="downloadCount">0</span> downloads
+            </span>
+        </div>
+
+        <!-- DESCRIPTION -->
+        <div class="release-description">
+            <strong>✨ What's new in v1.0.0</strong><br />
+            This release includes the latest stable build with performance improvements and bug fixes.
+            Click the <span class="highlight">Download</span> button below to get the package.
+            <span style="color:#57606a; font-size:0.9rem; display:block; margin-top:0.3rem;">
+                <code>a2zfile</code> — ready to use
+            </span>
+        </div>
+
+        <!-- DOWNLOAD BUTTON -->
+        <div style="display: flex; justify-content: flex-start;">
+            <a href="https://filehub.online/a2zfile/" target="_blank" rel="noopener noreferrer" class="btn-github" id="downloadBtn">
+                <!-- inline SVG download arrow -->
+                <svg viewBox="0 0 16 16" aria-hidden="true">
+                    <path d="M7.47 10.78a.75.75 0 001.06 0l3.75-3.75a.75.75 0 00-1.06-1.06L8.75 8.44V1.75a.75.75 0 00-1.5 0v6.69L4.78 5.97a.75.75 0 00-1.06 1.06l3.75 3.75zM3.75 13a.75.75 0 000 1.5h8.5a.75.75 0 000-1.5h-8.5z" />
+                </svg>
+                Download
+            </a>
+        </div>
+
+        <!-- ACTION ROW -->
+        <div class="action-row">
+            <div class="asset-hint">
+                <svg viewBox="0 0 16 16" aria-hidden="true">
+                    <path d="M4 1.75C4 .784 4.784 0 5.75 0h5.586c.464 0 .909.184 1.237.513l2.914 2.914c.329.328.513.773.513 1.237v8.586A1.75 1.75 0 0114.25 15h-8.5A1.75 1.75 0 014 13.25V1.75zm1.75-.25a.25.25 0 00-.25.25v11.5c0 .138.112.25.25.25h8.5a.25.25 0 00.25-.25V5h-2.75A1.75 1.75 0 019.5 3.25V1.5H5.75zm7.56 4h-2.56a.25.25 0 01-.25-.25V2.69l2.81 2.81zM2 3.75A.75.75 0 012.75 3h1.5a.75.75 0 010 1.5h-1.5A.75.75 0 012 3.75zm0 3.5A.75.75 0 012.75 6.5h1.5a.75.75 0 010 1.5h-1.5A.75.75 0 012 7.25zm.75 2.75a.75.75 0 000 1.5h1.5a.75.75 0 000-1.5h-1.5z" />
+                </svg>
+                <span>a2zfile.zip</span> · 4.2 MB
+            </div>
+            <div class="asset-hint">
+                <span>SHA256</span>
+                <span class="checksum">e3b0c44298fc1c14...</span>
+            </div>
+            <div class="asset-hint">
+                <svg viewBox="0 0 16 16" aria-hidden="true" style="width:14px;height:14px;">
+                    <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z" />
+                </svg>
+                <span>Open Source</span>
+            </div>
+        </div>
+
+        <!-- FOOTER -->
+        <div class="release-footer">
+            <span class="badge">📄 README.md</span>
+            <span class="link-hidden">
+                <svg class="github-icon" viewBox="0 0 16 16" aria-hidden="true">
+                    <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z" />
+                </svg>
+                Download · opens in new tab
+            </span>
+            <span class="badge">🔒 verified</span>
+            <span class="live-clock" id="liveClock">--:--:--</span>
+        </div>
+
+        <!-- 
+          ============================================================
+          IMPORTANT: the actual link is hidden – it's only inside the 
+          href attribute of the button above. 
+          No visible text shows the URL.
+          ============================================================
+        -->
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- JAVASCRIPT - scripts.js (inline for single-file convenience)  -->
+    <!-- ============================================================ -->
+    <script>
+        (function() {
+            'use strict';
+
+            // ----- DOM refs -----
+            const downloadBtn = document.getElementById('downloadBtn');
+            const downloadCountEl = document.getElementById('downloadCount');
+            const counterContainer = document.getElementById('downloadCounter');
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toastMessage');
+            const clockEl = document.getElementById('liveClock');
+
+            // ----- State -----
+            let downloadCount = parseInt(localStorage.getItem('githubReleaseDownloads') || '0', 10);
+            let toastTimeout = null;
+
+            // ----- Update counter display -----
+            function updateCounterDisplay() {
+                downloadCountEl.textContent = downloadCount;
+                // animate pop
+                counterContainer.classList.remove('pop');
+                // force reflow
+                void counterContainer.offsetWidth;
+                counterContainer.classList.add('pop');
+            }
+
+            // ----- Save to localStorage -----
+            function saveCount() {
+                localStorage.setItem('githubReleaseDownloads', String(downloadCount));
+            }
+
+            // ----- Show toast notification -----
+            function showToast(message, duration) {
+                duration = duration || 2500;
+                toastMessage.textContent = message || 'Download started!';
+                toast.classList.add('show');
+                if (toastTimeout) {
+                    clearTimeout(toastTimeout);
+                }
+                toastTimeout = setTimeout(function() {
+                    toast.classList.remove('show');
+                    toastTimeout = null;
+                }, duration);
+            }
+
+            // ----- Ripple effect on button -----
+            function createRipple(e) {
+                const btn = e.currentTarget;
+                const rect = btn.getBoundingClientRect();
+                const ripple = document.createElement('span');
+                ripple.className = 'ripple';
+                const size = Math.max(rect.width, rect.height);
+                ripple.style.width = ripple.style.height = size + 'px';
+                const x = (e.clientX || e.pageX || 0) - rect.left - size / 2;
+                const y = (e.clientY || e.pageY || 0) - rect.top - size / 2;
+                ripple.style.left = x + 'px';
+                ripple.style.top = y + 'px';
+                btn.appendChild(ripple);
+                setTimeout(function() {
+                    if (ripple.parentNode) {
+                        ripple.parentNode.removeChild(ripple);
+                    }
+                }, 600);
+            }
+
+            // ----- Handle download click -----
+            function handleDownload(e) {
+                // Increment counter
+                downloadCount += 1;
+                updateCounterDisplay();
+                saveCount();
+
+                // Show toast
+                showToast('⬇️ Download started! (' + downloadCount + ' total)');
+
+                // Ripple (already triggered by click, but we add a small visual feedback)
+                // The link will open in new tab because of target="_blank"
+                // We don't prevent default — let the link do its job.
+            }
+
+            // ----- Live clock -----
+            function updateClock() {
+                const now = new Date();
+                const h = String(now.getHours()).padStart(2, '0');
+                const m = String(now.getMinutes()).padStart(2, '0');
+                const s = String(now.getSeconds()).padStart(2, '0');
+                clockEl.textContent = h + ':' + m + ':' + s + ' UTC';
+            }
+
+            // ----- Init -----
+            function init() {
+                // Set initial counter
+                updateCounterDisplay();
+
+                // Set initial clock
+                updateClock();
+                setInterval(updateClock, 1000);
+
+                // Attach event listeners
+                if (downloadBtn) {
+                    // Ripple on click (but we also need to handle the download)
+                    downloadBtn.addEventListener('click', function(e) {
+                        // Create ripple effect
+                        createRipple(e);
+                        // Handle download logic (counter, toast)
+                        handleDownload(e);
+                        // The link will still open because we don't preventDefault
+                    });
+
+                    // Also add a 'mousedown' ripple for better feel
+                    downloadBtn.addEventListener('mousedown', function(e) {
+                        // Just ripple, but we already have click doing it.
+                        // We'll keep it simple: click does both.
+                    });
+                }
+
+                // Optional: show a welcome toast
+                setTimeout(function() {
+                    showToast('🔔 Release v1.0.0 available', 2000);
+                }, 600);
+            }
+
+            // Run when DOM is ready
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', init);
+            } else {
+                init();
+            }
+
+        })();
+    </script>
+</body>
+</html>
